@@ -53,8 +53,8 @@ namespace IntermediateDataService
         public string getSelectEi_OmeDataSQL()
         {
             this.selectEi_omeDataSQL =
-                " select * from ome_file ,tc_ome_file " +
-                " where ome_file.ome81 = tc_ome_file.tc_ome06 and tc_ome_file.tc_ome06 = '1'; ";
+                " select * from tc_ome_file , ome_file " +
+                " where tc_ome01 = ome01 and tc_ome06 = '1' ";
 
 
 
@@ -69,15 +69,14 @@ namespace IntermediateDataService
             return this.deleteEi_omeDataSQL;
         }
 
-        public string getsqlServerOmeDataCount()
+        public string getsqlServerEi_OmeDataCount()
         {
 
             this.sqlServerEi_omeDataCount =
                 "SELECT COUNT(ei_ome01) FROM ei_ome_file " +
                 " WHERE ei_ome01 = ?  " +
-                "   AND ei_ome02 = ? " +
-                "   AND ei_ome04 = ? ";
-
+                "   AND ei_ome08 = ? " ;
+               
             return this.sqlServerEi_omeDataCount;
         }
 

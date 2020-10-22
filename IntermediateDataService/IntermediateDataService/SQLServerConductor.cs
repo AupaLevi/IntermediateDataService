@@ -102,69 +102,68 @@ namespace IntermediateDataService
             return this.deletedRows;
         }
 
-        public List<OraEi_OmeObject> InsertEi_OmeSQLServer(List<OraEi_OmeObject> oraEi_Omes)
+        public String InsertEi_OmeSQLServer(OraEi_OmeObject oraEi_Omes)
         {
             sql = "";
             ProjectStringPool stringPool = new ProjectStringPool();
-            List<OraEi_OmeObject> insertedEi_OmeObjects = new List<OraEi_OmeObject>();
+            //List<OraEi_OmeObject> insertedEi_OmeObjects = new List<OraEi_OmeObject>();
             sql = stringPool.getInsSQLServerEi_OmeSQL();
 
             actionResult = "SUCCESS";
             OpenConnection();
-            if (oraEi_Omes.Count > 0)
-            {
-                foreach (OraEi_OmeObject ei_ome in oraEi_Omes)
-                {
-                    try
-                    {
-                        SqlCommand sqlCommand = sqlConnection.CreateCommand();
-                        sqlCommand.Connection = sqlConnection;
-                        sqlCommand.CommandText = sql;
 
-                        sqlCommand.Parameters.AddWithValue("@val01", ei_ome.Ei_ome01);
-                        sqlCommand.Parameters.AddWithValue("@val02", ei_ome.Ei_ome02);
-                        sqlCommand.Parameters.AddWithValue("@val03", ei_ome.Ei_ome04);
-                        sqlCommand.Parameters.AddWithValue("@val04", ei_ome.Ei_ome05);
-                        sqlCommand.Parameters.AddWithValue("@val05", ei_ome.Ei_ome06);
-                        sqlCommand.Parameters.AddWithValue("@val06", ei_ome.Ei_ome07);
-                        sqlCommand.Parameters.AddWithValue("@val07", ei_ome.Ei_ome08);
-                        sqlCommand.Parameters.AddWithValue("@val08", ei_ome.Ei_ome09);
-                        sqlCommand.Parameters.AddWithValue("@val09", ei_ome.Ei_ome10);
-                        sqlCommand.Parameters.AddWithValue("@val010", ei_ome.Ei_ome11);
-                        sqlCommand.Parameters.AddWithValue("@val011", ei_ome.Ei_ome12);
-                        sqlCommand.Parameters.AddWithValue("@val012", ei_ome.Ei_ome13);
-                        /*
-                        sqlCommand.Parameters.AddWithValue("@val13", ei_ome.Ei_ome14);
-                        sqlCommand.Parameters.AddWithValue("@val14", ei_ome.Ei_ome15);
-                        sqlCommand.Parameters.AddWithValue("@val15", ei_ome.Ei_omevoid);
-                        sqlCommand.Parameters.AddWithValue("@val16", ei_ome.Ei_omevoidu);
-                        sqlCommand.Parameters.AddWithValue("@val17", ei_ome.Ei_omevoidd);
-                        sqlCommand.Parameters.AddWithValue("@val18", ei_ome.Ei_omevoidm);
-                        sqlCommand.Parameters.AddWithValue("@val19", ei_ome.Tc_omevoids);
-                        sqlCommand.Parameters.AddWithValue("@val20", ei_ome.Ei_omecncl);
-                        sqlCommand.Parameters.AddWithValue("@val21", ei_ome.Ei_omecnclu);
-                        sqlCommand.Parameters.AddWithValue("@val22", ei_ome.Ei_omecncld);
-                        sqlCommand.Parameters.AddWithValue("@val23", ei_ome.Ei_omecnclm);
-                        sqlCommand.Parameters.AddWithValue("@val24", ei_ome.Tc_omecncls);
-                        */
-                        sqlCommand.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.Write("SQLServer Ins Ei_Ome Exception : " + ex.Message);
-                        actionResult = "FAIL";
-                        break;
-                    }
-                    finally
-                    {
-                        if (actionResult == "SUCCESS")
-                        {
-                            insertedEi_OmeObjects.Add(ei_ome);
-                        }
-                    }
-                }
+
+            try
+            {
+                SqlCommand sqlCommand = sqlConnection.CreateCommand();
+                sqlCommand.Connection = sqlConnection;
+                sqlCommand.CommandText = sql;
+
+                sqlCommand.Parameters.AddWithValue("@val01", oraEi_Omes.Ei_ome01);
+                sqlCommand.Parameters.AddWithValue("@val02", oraEi_Omes.Ei_ome02);
+                sqlCommand.Parameters.AddWithValue("@val03", oraEi_Omes.Ei_ome04);
+                sqlCommand.Parameters.AddWithValue("@val04", oraEi_Omes.Ei_ome05);
+                sqlCommand.Parameters.AddWithValue("@val05", oraEi_Omes.Ei_ome06);
+                sqlCommand.Parameters.AddWithValue("@val06", oraEi_Omes.Ei_ome07);
+                sqlCommand.Parameters.AddWithValue("@val07", oraEi_Omes.Ei_ome08);
+                sqlCommand.Parameters.AddWithValue("@val08", oraEi_Omes.Ei_ome09);
+                sqlCommand.Parameters.AddWithValue("@val09", oraEi_Omes.Ei_ome10);
+                sqlCommand.Parameters.AddWithValue("@val010", oraEi_Omes.Ei_ome11);
+                sqlCommand.Parameters.AddWithValue("@val011", oraEi_Omes.Ei_ome12);
+                sqlCommand.Parameters.AddWithValue("@val012", oraEi_Omes.Ei_ome13);
+                /*
+                sqlCommand.Parameters.AddWithValue("@val13", ei_ome.Ei_ome14);
+                sqlCommand.Parameters.AddWithValue("@val14", ei_ome.Ei_ome15);
+                sqlCommand.Parameters.AddWithValue("@val15", ei_ome.Ei_omevoid);
+                sqlCommand.Parameters.AddWithValue("@val16", ei_ome.Ei_omevoidu);
+                sqlCommand.Parameters.AddWithValue("@val17", ei_ome.Ei_omevoidd);
+                sqlCommand.Parameters.AddWithValue("@val18", ei_ome.Ei_omevoidm);
+                sqlCommand.Parameters.AddWithValue("@val19", ei_ome.Tc_omevoids);
+                sqlCommand.Parameters.AddWithValue("@val20", ei_ome.Ei_omecncl);
+                sqlCommand.Parameters.AddWithValue("@val21", ei_ome.Ei_omecnclu);
+                sqlCommand.Parameters.AddWithValue("@val22", ei_ome.Ei_omecncld);
+                sqlCommand.Parameters.AddWithValue("@val23", ei_ome.Ei_omecnclm);
+                sqlCommand.Parameters.AddWithValue("@val24", ei_ome.Tc_omecncls);
+                */
+                sqlCommand.ExecuteNonQuery();
             }
-            return insertedEi_OmeObjects;
+            catch (Exception ex)
+            {
+                Console.Write("SQLServer Ins Ei_Ome Exception : " + ex.Message);
+                actionResult = "FAIL";
+
+            }
+            finally
+            {
+
+
+                CloseConnection();
+
+            }
+            return actionResult;
         }
+
     }
+
 }
+

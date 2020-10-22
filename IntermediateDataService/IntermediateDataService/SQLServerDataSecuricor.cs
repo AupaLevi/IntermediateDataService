@@ -36,7 +36,7 @@ namespace IntermediateDataService
                 sqlConnection.Open();
                 return true;
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 switch (ex.Number)
                 {
@@ -69,21 +69,23 @@ namespace IntermediateDataService
             }
         }
 
-        public int SelectEi_OMERowCounts(string Key1 , int Key2 , int Key3)
+        public int SelectEi_OmeRowCounts(string Key1)
         {
             OpenConnection();
-            ProjectStringPool stringPool = new ProjectStringPool();
+
             dataCount = 0;
             try
             {
-                sql = stringPool.getsqlServerOmeDataCount();
+                sql = "SELECT COUNT(ei_ome01) FROM ei_ome_file " +
+                " WHERE ei_ome01='" + Key1 + "'";
+                
                 SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
                 sqlCommand.Connection = sqlConnection;
                 sqlCommand.CommandText = sql;
-                sqlCommand.Parameters.AddWithValue("@val01", Key1);
-                sqlCommand.Parameters.AddWithValue("@val02", Key2);
-                sqlCommand.Parameters.AddWithValue("@val03", Key3);
-                dataCount = Convert.ToInt16(sqlCommand.ExecuteNonQuery());
+                //sqlCommand.Parameters.AddWithValue("@val01", Key1);
+
+
+                dataCount = Convert.ToInt16(sqlCommand.ExecuteScalar());
                 if (dataCount == -1)
                 {
                     dataCount = 0;
