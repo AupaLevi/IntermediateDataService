@@ -27,7 +27,7 @@ namespace IntermediateDataService
 
             string oraResult;
             int dataCount;
-            string OmeResult;
+            string Ei_OmeResult;
             //int deletedRows;
 
             try
@@ -37,8 +37,8 @@ namespace IntermediateDataService
                 dataTable = oracleDBConductor.GetDataTable(oraSQLString);
                 oraResult = "";
 
-                insertSQLServerEi_OmeObjects = new List<OraEi_OmeObject>();
-
+                //insertSQLServerEi_OmeObjects = new List<OraEi_OmeObject>();
+                goodSQLServerEi_OmeObjects = new List<OraEi_OmeObject>();
 
                 if (dataTable.Rows.Count > 0)
                 {
@@ -89,25 +89,25 @@ namespace IntermediateDataService
 
                                 if (dataCount == 0)
                                 {
-                                    insertSQLServerEi_OmeObjects.Add(oraEi_OmeObject);
+                                    goodSQLServerEi_OmeObjects.Add(oraEi_OmeObject);
                                 }
                             }
                         }//End of try-catch-finally
                         //}//End of foreach
                     }//End of if else
-                    OmeResult = "FAILED";
-                    goodSQLServerEi_OmeObjects = new List<OraEi_OmeObject>();
+                    Ei_OmeResult = "FAILED";
+                    
                     insertedEi_OmeObjects = new List<OraEi_OmeObject>();
 
-                    if (insertSQLServerEi_OmeObjects.Count > 0)
+                    if (goodSQLServerEi_OmeObjects.Count > 0)
                     {
-                        foreach (OraEi_OmeObject ei_InsOme in insertSQLServerEi_OmeObjects)
+                        foreach (OraEi_OmeObject ei_InsOme in goodSQLServerEi_OmeObjects)
                         {
                             SQLServerConductor sqlServerConductor = new SQLServerConductor();
-                            OmeResult = sqlServerConductor.InsertEi_OmeSQLServer(ei_InsOme);
-                            if (OmeResult == "SUCCESS")
+                            Ei_OmeResult = sqlServerConductor.InsertEi_OmeSQLServer(ei_InsOme);
+                            if (Ei_OmeResult == "SUCCESS")
                             {
-                                goodSQLServerEi_OmeObjects.Add(ei_InsOme);
+                                insertedEi_OmeObjects.Add(ei_InsOme);
                             }
                         }
                         //deletedRows = sqlServerConductor.DeleteOmeRows(year, month);                    
