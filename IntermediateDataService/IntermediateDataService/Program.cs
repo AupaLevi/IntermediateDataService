@@ -20,8 +20,6 @@ namespace IntermediateDataService
             List<SqlEi_OmeObject> goodSQLServerEi_OmeObjects;
             List<SqlEi_OmeObject> insertedEi_OmeObjects;
 
-            List<OraTc_OmeObject> updateSQLServerTc_OmeObjects;
-
             List<OraTc_OmeObject> updatedTc_OmeObjects;
 
             string oraResult;
@@ -38,7 +36,6 @@ namespace IntermediateDataService
                 oraResult = "";
 
                 goodSQLServerEi_OmeObjects = new List<SqlEi_OmeObject>();
-                updateSQLServerTc_OmeObjects = new List<OraTc_OmeObject>();
 
                 if (dataTable.Rows.Count > 0)
                 {
@@ -88,7 +85,6 @@ namespace IntermediateDataService
                                 if (dataCount == 0)
                                 {
                                     goodSQLServerEi_OmeObjects.Add(sqlEi_OmeObject);
-                                    updateSQLServerTc_OmeObjects.Add(oraTc_OmeObject);
                                 }
                             }
                         }//End of try-catch-finally
