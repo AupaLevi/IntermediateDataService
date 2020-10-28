@@ -12,9 +12,8 @@ namespace IntermediateDataService
         //Oracle Side
         private string oracleConnectionString;
         private string selectTc_omeDataSQL;
-        private string selectOmeDataSQL;
         private string insSQLServerOmeSQL;
-        private string updateTc_OmeStatus;
+
         //SQLServer Side
         private string sqlServerEi_omeDataCount;
         private string insSQLServerEi_omeSQL;
@@ -49,14 +48,6 @@ namespace IntermediateDataService
 
 
             return this.selectEi_omeDataSQL;
-        }
-
-        public string getDeleteOmeDataSQL()
-        {
-            this.deleteEi_omeDataSQL = "DELETE FROM ei_ome_file " +
-                                     " WHERE ei_ome02 = @val01 " +
-                                     "   AND ei_ome04 = @val02 ";
-            return this.deleteEi_omeDataSQL;
         }
 
         public string getsqlServerEi_OmeDataCount()
@@ -97,14 +88,6 @@ namespace IntermediateDataService
                 "@val01 ,@val02 ,@val03 ,@val04 ,@val05 ,@val06 ,@val07 ,@val08 ,@val09 ,@val010 ,@val011 ,@val012  " +
                  ")";
             return this.insSQLServerEi_omeSQL;
-        }
-        public string getUpdateTc_OmeStatus()
-        {
-            this.updateTc_OmeStatus =
-                " update tc_ome_file set TC_OME06 = '2' " +
-                " where tc_ome01 = @val01 " +
-                " and tc_ome06 = '1' ";
-            return this.updateTc_OmeStatus;
         }
 
     }

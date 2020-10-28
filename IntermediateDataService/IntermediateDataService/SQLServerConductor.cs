@@ -68,39 +68,6 @@ namespace IntermediateDataService
                 return false;
             }
         }
-        public int DeleteOmeRows(int year, int month)
-        {
-            sql = "";
-            ProjectStringPool stringPool = new ProjectStringPool();
-            sql = stringPool.getDeleteOmeDataSQL();
-
-            CommonUntil commonUntil = new CommonUntil();
-            //int year = commonUntil.getYear();
-            //int month = commonUntil.getMonth() - 1;
-            try
-            {
-                OpenConnection();
-
-                SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@val01", year);
-                sqlCommand.Parameters.AddWithValue("@val02", month);
-
-                this.deletedRows = sqlCommand.ExecuteNonQuery();
-
-            }
-            catch (Exception ex)
-            {
-                PostalService postalService = new PostalService();
-                postalService.SendMail("levi.huang@aupa.com.tw", "Intermediate Data Copier Alert", ex.Message);
-                this.deletedRows = 0;
-            }
-            finally
-            {
-                CloseConnection();
-            }
-
-            return this.deletedRows;
-        }
 
         public String InsertEi_OmeSQLServer(OraEi_OmeObject oraEi_Omes)
         {
