@@ -39,12 +39,12 @@
   <ItemGroup>
     <Compile Include="CommonUntil.cs" />
     <Compile Include="OracleDBConductor.cs" />
-    <Compile Include="OraEi_OmeObject.cs" />
     <Compile Include="OraOMEObject.cs" />
     <Compile Include="OraTc_OmeObject.cs" />
     <Compile Include="PostalService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectStringPool.cs" />
+    <Compile Include="SqlEi_OmeObject.cs" />
     <Compile Include="SQLServerConductor.cs" />
     <Compile Include="SQLServerDataSecuricor.cs" />
   </ItemGroup>

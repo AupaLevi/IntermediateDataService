@@ -14,11 +14,11 @@ namespace IntermediateDataService
             ProjectStringPool projectStringPool = new ProjectStringPool();
             OracleDBConductor oracleDBConductor = new OracleDBConductor();
             DataTable dataTable;
-            OraEi_OmeObject oraEi_OmeObject;
+            SqlEi_OmeObject sqlEi_OmeObject;
             OraTc_OmeObject oraTc_OmeObject;
 
-            List<OraEi_OmeObject> goodSQLServerEi_OmeObjects;
-            List<OraEi_OmeObject> insertedEi_OmeObjects;
+            List<SqlEi_OmeObject> goodSQLServerEi_OmeObjects;
+            List<SqlEi_OmeObject> insertedEi_OmeObjects;
 
             List<OraTc_OmeObject> updateSQLServerTc_OmeObjects;
 
@@ -37,36 +37,36 @@ namespace IntermediateDataService
                 dataTable = oracleDBConductor.GetDataTable(oraSQLString);
                 oraResult = "";
 
-                goodSQLServerEi_OmeObjects = new List<OraEi_OmeObject>();
+                goodSQLServerEi_OmeObjects = new List<SqlEi_OmeObject>();
                 updateSQLServerTc_OmeObjects = new List<OraTc_OmeObject>();
 
                 if (dataTable.Rows.Count > 0)
                 {
                     foreach (DataRow row in dataTable.Rows)
                     {
-                        oraEi_OmeObject = new OraEi_OmeObject();
+                        sqlEi_OmeObject = new SqlEi_OmeObject();
                         oraTc_OmeObject = new OraTc_OmeObject();
                         oraResult = "Y";
 
                         try
                         {
-                            oraEi_OmeObject.Ei_ome01 = row[dataTable.Columns["ome01"]].ToString();
-                            oraEi_OmeObject.Ei_ome02 = (row[dataTable.Columns["ome02"]]) == DBNull.Value ? "" :
+                            sqlEi_OmeObject.Ei_ome01 = row[dataTable.Columns["ome01"]].ToString();
+                            sqlEi_OmeObject.Ei_ome02 = (row[dataTable.Columns["ome02"]]) == DBNull.Value ? "" :
                                 Convert.ToDateTime(row[dataTable.Columns["ome02"]]).ToString("yyyy-MM-dd");
-                            oraEi_OmeObject.Ei_ome04 = row[dataTable.Columns["ome04"]].ToString();
-                            oraEi_OmeObject.Ei_ome05 = row[dataTable.Columns["ome042"]].ToString();
-                            oraEi_OmeObject.Ei_ome06 = row[dataTable.Columns["ome043"]].ToString();
-                            oraEi_OmeObject.Ei_ome07 = row[dataTable.Columns["ome044"]].ToString();
-                            oraEi_OmeObject.Ei_ome08 = row[dataTable.Columns["ome16"]].ToString();
-                            oraEi_OmeObject.Ei_ome09 = row[dataTable.Columns["ome21"]].ToString();
-                            oraEi_OmeObject.Ei_ome10 = (row[dataTable.Columns["ome211"]]) == DBNull.Value ? 0 :
+                            sqlEi_OmeObject.Ei_ome04 = row[dataTable.Columns["ome04"]].ToString();
+                            sqlEi_OmeObject.Ei_ome05 = row[dataTable.Columns["ome042"]].ToString();
+                            sqlEi_OmeObject.Ei_ome06 = row[dataTable.Columns["ome043"]].ToString();
+                            sqlEi_OmeObject.Ei_ome07 = row[dataTable.Columns["ome044"]].ToString();
+                            sqlEi_OmeObject.Ei_ome08 = row[dataTable.Columns["ome16"]].ToString();
+                            sqlEi_OmeObject.Ei_ome09 = row[dataTable.Columns["ome21"]].ToString();
+                            sqlEi_OmeObject.Ei_ome10 = (row[dataTable.Columns["ome211"]]) == DBNull.Value ? 0 :
                                    Convert.ToDecimal(row[dataTable.Columns["ome211"]]);
-                            oraEi_OmeObject.Ei_ome11 = (row[dataTable.Columns["ome59"]]) == DBNull.Value ? 0 :
+                            sqlEi_OmeObject.Ei_ome11 = (row[dataTable.Columns["ome59"]]) == DBNull.Value ? 0 :
                                     Convert.ToDecimal(row[dataTable.Columns["ome59"]]);
-                            oraEi_OmeObject.Ei_ome12 = (row[dataTable.Columns["ome59x"]]) == DBNull.Value ? 0 :
+                            sqlEi_OmeObject.Ei_ome12 = (row[dataTable.Columns["ome59x"]]) == DBNull.Value ? 0 :
                                    Convert.ToDecimal(row[dataTable.Columns["ome59x"]]);
 
-                            oraEi_OmeObject.Ei_ome13 = (row[dataTable.Columns["ome59t"]]) == DBNull.Value ? 0 :
+                            sqlEi_OmeObject.Ei_ome13 = (row[dataTable.Columns["ome59t"]]) == DBNull.Value ? 0 :
                                     Convert.ToDecimal(row[dataTable.Columns["ome59t"]]);
 
                         }
@@ -84,10 +84,10 @@ namespace IntermediateDataService
                             {
                                 SQLServerDataSecuricor dataSecuricor = new SQLServerDataSecuricor();
                                 dataCount = 0;
-                                dataCount = dataSecuricor.SelectEi_OmeRowCounts(oraEi_OmeObject.Ei_ome01);
+                                dataCount = dataSecuricor.SelectEi_OmeRowCounts(sqlEi_OmeObject.Ei_ome01);
                                 if (dataCount == 0)
                                 {
-                                    goodSQLServerEi_OmeObjects.Add(oraEi_OmeObject);
+                                    goodSQLServerEi_OmeObjects.Add(sqlEi_OmeObject);
                                     updateSQLServerTc_OmeObjects.Add(oraTc_OmeObject);
                                 }
                             }
@@ -96,12 +96,12 @@ namespace IntermediateDataService
                     }//End of if else
                     actionResult = "FAILED";
                     
-                    insertedEi_OmeObjects = new List<OraEi_OmeObject>();
+                    insertedEi_OmeObjects = new List<SqlEi_OmeObject>();
                     updatedTc_OmeObjects = new List<OraTc_OmeObject>();
 
                     if (goodSQLServerEi_OmeObjects.Count > 0)
                     {
-                        foreach (OraEi_OmeObject ei_InsOme in goodSQLServerEi_OmeObjects)
+                        foreach (SqlEi_OmeObject ei_InsOme in goodSQLServerEi_OmeObjects)
                         {
                             SQLServerConductor sqlServerConductor = new SQLServerConductor();
                             actionResult = sqlServerConductor.InsertEi_OmeSQLServer(ei_InsOme);
@@ -110,16 +110,12 @@ namespace IntermediateDataService
                                 insertedEi_OmeObjects.Add(ei_InsOme);
                             }
                         }
-                    }
 
-                    if (updateSQLServerTc_OmeObjects.Count > 0)
-                    {
-                        foreach (OraEi_OmeObject ei_ome in goodSQLServerEi_OmeObjects)
+                        foreach (SqlEi_OmeObject ei_ome in goodSQLServerEi_OmeObjects)
                         {
-                             oracleDBConductor.UpdateTc_OmeDB(ei_ome.Ei_ome01);
-          
+                            oracleDBConductor.UpdateTc_OmeDB(ei_ome.Ei_ome01);
+
                         }
-                       
                     }
                 }
 
