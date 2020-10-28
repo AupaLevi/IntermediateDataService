@@ -50,17 +50,6 @@ namespace IntermediateDataService
             return this.selectEi_omeDataSQL;
         }
 
-        public string getsqlServerEi_OmeDataCount()
-        {
-
-            this.sqlServerEi_omeDataCount =
-                "SELECT COUNT(ei_ome01) FROM ei_ome_file " +
-                " WHERE ei_ome01 = ?  " +
-                "   AND ei_ome08 = ? " ;
-               
-            return this.sqlServerEi_omeDataCount;
-        }
-
         public string getInsSQLServerOmeSQL()
         {
             this.insSQLServerOmeSQL =
