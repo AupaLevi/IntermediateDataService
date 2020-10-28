@@ -77,8 +77,8 @@ namespace IntermediateDataService
                 //    new OracleParameter("val02",month)
                 //};
                 //command.Parameters.AddRange(parameters);
-               //sql = "SELECT * FROM tc_ome_file " +
-               //        " WHERE tc_ome06 = '1' ";
+                //sql = "SELECT * FROM tc_ome_file " +
+                //        " WHERE tc_ome06 = '1' ";
                 //OracleCommand command = new OracleCommand(sql, this.connection);
                 OracleDataReader oracleDataReader = command.ExecuteReader();
 
@@ -126,59 +126,40 @@ namespace IntermediateDataService
             return oraResult;
         }
 
-        public List<OraTc_OmeObject> UpdateTc_OmeDB(List<OraTc_OmeObject> OraTc_Omes)
+        public String UpdateTc_OmeDB(String Key1)
         {
-            sql = "";
-            ProjectStringPool stringPool = new ProjectStringPool();
-            List<OraTc_OmeObject> updatedTc_OmeObjects = new List<OraTc_OmeObject>();
-            sql = stringPool.getUpdateTc_OmeStatus();
+            sql = " update tc_ome_file set TC_OME06 = '2' " +
+                " where tc_ome06 = '1' " +
+                " and Tc_ome01 = '" + Key1 + "'" ;
+
+
+
+            List <OraTc_OmeObject> updatedTc_OmeObjects = new List<OraTc_OmeObject>();
+           
 
             oraResult = "SUCCESS";
+
             OpenOracleConnection();
-            if (OraTc_Omes.Count > 0)
+
+            try
             {
-                foreach (OraTc_OmeObject oraTc_Ome in OraTc_Omes)
-                {
-                    try
-                    {
-                        OracleCommand command = connection.CreateCommand();
-                        command.Connection = connection;
-                        command.CommandText = sql;
+                OracleCommand command = connection.CreateCommand();
+                command.Connection = connection;
+                command.CommandText = sql;
+                command.CommandType = CommandType.Text;
 
-                        command.Parameters.Add("@val01", oraTc_Ome.Tc_ome06);
-                        
-
-                        command.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.Write("  Exception : " + ex.Message);
-                        oraResult = "FAIL";
-                    }
-                    finally
-                    {
-                        if (oraResult == "SUCCESS")
-                        {
-                            updatedTc_OmeObjects.Add(oraTc_Ome);
-                        }    
-                    }
-                }
+                command.ExecuteNonQuery();
             }
-
-            CloseOracleConnection();
-
-            return updatedTc_OmeObjects;
+            catch (Exception ex)
+            {
+                Console.Write("  Exception : " + ex.Message);
+                oraResult = "FAIL";
+            }
+            finally
+            {
+                CloseOracleConnection();
+            }
+            return oraResult;
         }
-        /*
-           static private string GetConnectionString(string host, string port, string sid, string user, string pass)
-           {
-               return String.Format(
-                   "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})" +
-                   "(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id={3};Password={4};",
-                   host, port, sid, user, pass);
-           }
-       */
-
-
     }
 }

@@ -40,16 +40,6 @@ namespace IntermediateDataService
             return this.selectTc_omeDataSQL;
         }
 
-        public string getSelectOmeDataSQL()
-        {
-            this.selectOmeDataSQL =
-               " select * from ome_file " +
-               " where year (ome02) = 2020 " +
-               " order by ome02 desc " ;
-
-            return this.selectOmeDataSQL;
-        }
-
         public string getSelectEi_OmeDataSQL()
         {
             this.selectEi_omeDataSQL =
@@ -108,12 +98,12 @@ namespace IntermediateDataService
                  ")";
             return this.insSQLServerEi_omeSQL;
         }
-
         public string getUpdateTc_OmeStatus()
         {
             this.updateTc_OmeStatus =
-                " update tc_ome_file set TC_OME06 = '2'" +
-                " where TC_OME06 = '1'" ;
+                " update tc_ome_file set TC_OME06 = '2' " +
+                " where tc_ome01 = @val01 " +
+                " and tc_ome06 = '1' ";
             return this.updateTc_OmeStatus;
         }
 

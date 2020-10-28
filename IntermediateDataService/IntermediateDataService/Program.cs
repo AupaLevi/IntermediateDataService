@@ -17,17 +17,17 @@ namespace IntermediateDataService
             OraEi_OmeObject oraEi_OmeObject;
             OraTc_OmeObject oraTc_OmeObject;
 
-            List<OraEi_OmeObject> insertSQLServerEi_OmeObjects;
             List<OraEi_OmeObject> goodSQLServerEi_OmeObjects;
             List<OraEi_OmeObject> insertedEi_OmeObjects;
 
             List<OraTc_OmeObject> updateSQLServerTc_OmeObjects;
-            List<OraTc_OmeObject> goodSQLServerTc_OmeObjects;
+
             List<OraTc_OmeObject> updatedTc_OmeObjects;
 
             string oraResult;
             int dataCount;
-            string Ei_OmeResult;
+            string actionResult;
+
             //int deletedRows;
 
             try
@@ -37,14 +37,15 @@ namespace IntermediateDataService
                 dataTable = oracleDBConductor.GetDataTable(oraSQLString);
                 oraResult = "";
 
-                //insertSQLServerEi_OmeObjects = new List<OraEi_OmeObject>();
                 goodSQLServerEi_OmeObjects = new List<OraEi_OmeObject>();
+                updateSQLServerTc_OmeObjects = new List<OraTc_OmeObject>();
 
                 if (dataTable.Rows.Count > 0)
                 {
                     foreach (DataRow row in dataTable.Rows)
                     {
                         oraEi_OmeObject = new OraEi_OmeObject();
+                        oraTc_OmeObject = new OraTc_OmeObject();
                         oraResult = "Y";
 
                         try
@@ -68,8 +69,6 @@ namespace IntermediateDataService
                             oraEi_OmeObject.Ei_ome13 = (row[dataTable.Columns["ome59t"]]) == DBNull.Value ? 0 :
                                     Convert.ToDecimal(row[dataTable.Columns["ome59t"]]);
 
-
-
                         }
                         catch (Exception ex)
                         {
@@ -86,31 +85,41 @@ namespace IntermediateDataService
                                 SQLServerDataSecuricor dataSecuricor = new SQLServerDataSecuricor();
                                 dataCount = 0;
                                 dataCount = dataSecuricor.SelectEi_OmeRowCounts(oraEi_OmeObject.Ei_ome01);
-
                                 if (dataCount == 0)
                                 {
                                     goodSQLServerEi_OmeObjects.Add(oraEi_OmeObject);
+                                    updateSQLServerTc_OmeObjects.Add(oraTc_OmeObject);
                                 }
                             }
                         }//End of try-catch-finally
                         //}//End of foreach
                     }//End of if else
-                    Ei_OmeResult = "FAILED";
+                    actionResult = "FAILED";
                     
                     insertedEi_OmeObjects = new List<OraEi_OmeObject>();
+                    updatedTc_OmeObjects = new List<OraTc_OmeObject>();
 
                     if (goodSQLServerEi_OmeObjects.Count > 0)
                     {
                         foreach (OraEi_OmeObject ei_InsOme in goodSQLServerEi_OmeObjects)
                         {
                             SQLServerConductor sqlServerConductor = new SQLServerConductor();
-                            Ei_OmeResult = sqlServerConductor.InsertEi_OmeSQLServer(ei_InsOme);
-                            if (Ei_OmeResult == "SUCCESS")
+                            actionResult = sqlServerConductor.InsertEi_OmeSQLServer(ei_InsOme);
+                            if (actionResult == "SUCCESS")
                             {
                                 insertedEi_OmeObjects.Add(ei_InsOme);
                             }
                         }
-                        //deletedRows = sqlServerConductor.DeleteOmeRows(year, month);                    
+                    }
+
+                    if (updateSQLServerTc_OmeObjects.Count > 0)
+                    {
+                        foreach (OraEi_OmeObject ei_ome in goodSQLServerEi_OmeObjects)
+                        {
+                             oracleDBConductor.UpdateTc_OmeDB(ei_ome.Ei_ome01);
+          
+                        }
+                       
                     }
                 }
 
@@ -121,109 +130,7 @@ namespace IntermediateDataService
                 return;
             }
 
-            // Tc_Ome Update
-            try
-            {
-                string oraSQLString = projectStringPool.getSelectTc_OmeDataSQL();
-
-                dataTable = oracleDBConductor.GetDataTable(oraSQLString);
-
-                updateSQLServerTc_OmeObjects = new List<OraTc_OmeObject>();
-
-                if (dataTable.Rows.Count > 0)
-                {
-                    foreach (DataRow row in dataTable.Rows)
-                    {
-                        oraTc_OmeObject = new OraTc_OmeObject();
-                        oraResult = "Y";
-
-                        try
-                        {
-                            oraTc_OmeObject.Tc_ome01 = row[dataTable.Columns["tc_ome01"]].ToString();
-                            oraTc_OmeObject.Tc_ome02 = (row[dataTable.Columns["tc_ome02"]]) == DBNull.Value ? "" :
-                                Convert.ToDateTime(row[dataTable.Columns["tc_ome02"]]).ToString("yyyy-MM-dd");
-                            oraTc_OmeObject.Tc_ome03 = row[dataTable.Columns["tc_ome03"]].ToString();
-                            oraTc_OmeObject.Tc_ome04 = row[dataTable.Columns["tc_ome04"]].ToString();
-                            oraTc_OmeObject.Tc_ome05 = row[dataTable.Columns["tc_ome05"]].ToString();
-                            oraTc_OmeObject.Tc_ome06 = row[dataTable.Columns["tc_ome06"]].ToString();
-                            oraTc_OmeObject.Tc_Omevoid = row[dataTable.Columns["tc_omevoid"]].ToString();
-                            oraTc_OmeObject.Tc_Omevoidu = row[dataTable.Columns["tc_omevoidu"]].ToString();
-                            oraTc_OmeObject.Tc_Omevoidd = (row[dataTable.Columns["tc_omevoidd"]]) == DBNull.Value ? "" :
-                                Convert.ToDateTime(row[dataTable.Columns["tc_Omevoidd"]]).ToString("yyyy-MM-dd");
-                            oraTc_OmeObject.Tc_Omevoidt = row[dataTable.Columns["tc_omevoidt"]].ToString();
-                            oraTc_OmeObject.Tc_Omevoidm = row[dataTable.Columns["tc_omevoidm"]].ToString();
-                            oraTc_OmeObject.Tc_Omevoids = row[dataTable.Columns["tc_omevoids"]].ToString();
-                            oraTc_OmeObject.Tc_Omecncl = row[dataTable.Columns["tc_omecncl"]].ToString();
-                            oraTc_OmeObject.Tc_Omecnclu = row[dataTable.Columns["tc_omecnclu"]].ToString();
-                            oraTc_OmeObject.Tc_Omecncld = (row[dataTable.Columns["tc_omecncld"]]) == DBNull.Value ? "" :
-                                Convert.ToDateTime(row[dataTable.Columns["tc_omecncld"]]).ToString("yyyy-MM-dd");
-                            oraTc_OmeObject.Tc_Omecnclt = row[dataTable.Columns["tc_omecnclt"]].ToString();
-                            oraTc_OmeObject.Tc_Omecnclm = row[dataTable.Columns["tc_omecnclm"]].ToString();
-                            oraTc_OmeObject.Tc_Omecncls = row[dataTable.Columns["tc_omecncls"]].ToString();
-                        }
-                        catch (Exception ex)
-                        {
-                            oraResult = "N";
-                            Console.WriteLine("Foreach Exception:" + ex.Message);
-
-                        }
-
-                        finally
-                        {
-                            if (oraResult == "Y")
-                            {
-                                SQLServerDataSecuricor dataSecuricor = new SQLServerDataSecuricor();
-                                //dataCount = 0;
-                                //dataCount = dataSecuricor.SelectOebxRowCounts(oraOebxObject.Tc_oebx01,
-                                //    oraOebxObject.Tc_oebx02);
-
-                                //For UPDATE Oebx
-                                updateSQLServerTc_OmeObjects.Add(oraTc_OmeObject);
-
-                            }
-                        }//End of Getting oebx by each Oeax02
-                    }
-                    updatedTc_OmeObjects = new List<OraTc_OmeObject>();
-
-                    if (updateSQLServerTc_OmeObjects.Count > 0)
-                    {
-                        updatedTc_OmeObjects = oracleDBConductor.UpdateTc_OmeDB(updateSQLServerTc_OmeObjects);
-                    }
-
-                    dataCount = 0;
-                    dataCount = updatedTc_OmeObjects.Count;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine("Exception:" + ex.Message);
-                throw;
-            }
-            //goodTc_OmeList = new List<OraTc_OmeObject>();
-            //if(listCount >0)
-            //{
-            //foreach (OraTc_OmeObject Tc_Omeupd in tc_OmeList)
-            //{
-            //oracleDBConductor = new OracleDBConductor();
-            //goodTc_OmeList.Add(Tc_Omeupd);
-            //}
-            //}
-
-            //if (goodTc_OmeList.Count > 0)
-            //{
-            //foreach (OraTc_OmeObject tc_OmeObjPostBack in goodTc_OmeList)
-            //{
-            //try
-            //{
-            //postBackResult = oracleDBConductor.ProcessedResultPostBack(tc_OmeObjPostBack.Tc_ome06);
-            //}
-            //catch (Exception ex)
-            //{
-            //Console.WriteLine("Post Back Exception" + ex.Message);
-            //}
-            //}
-            //}
+          
         }
     }
 }
